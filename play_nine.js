@@ -36,6 +36,12 @@ const Button = (props) =>{
 	return (
   	<div className="col-2">
     	{button}
+      <br /><br />
+      <button className="btn btn-warning btn-sm"
+        disabled={props.redraws===0}
+      	onClick={props.redraw}>
+      	<i className="fa fa-cog"></i>{props.redraws}
+      </button>
     </div>
   )
 }
@@ -85,6 +91,7 @@ class Game extends React.Component{
     randomNumberOfStars:1+Math.floor(Math.random()*9),
     answerIsCorrect: null,
     usedNumbers:[],
+    redraws:5
   }
   
   selectNumber = (clickedNumber) =>{
@@ -118,12 +125,24 @@ class Game extends React.Component{
     }));
   }
   
+  redraw = ()=>{
+  	if(this.state.redraws === 0){return;}
+  
+  	this.setState(prevState=>({
+    	selectedNumbers:[],
+      answerIsCorrect: null,
+      randomNumberOfStars: 1+Math.floor(Math.random()*9),
+      redraws: prevState.redraws-1
+    }));
+  }
+  
 	render(){
   	const {
       selectedNumbers, 
       randomNumberOfStars, 
       answerIsCorrect,
-      usedNumbers
+      usedNumbers,
+      redraws
     } =this.state
   	return (
     	<div className="container">
@@ -132,8 +151,10 @@ class Game extends React.Component{
         <div className="row">
           <Stars numberOfStars={randomNumberOfStars}/>
           <Button selectedNumbers={selectedNumbers}
+          				redraws={redraws}
           				checkAnswer={this.checkAnswer}
                   acceptAnswer={this.acceptAnswer}
+                  redraw={this.redraw}
                   answerIsCorrect={answerIsCorrect}/>
           <Answer selectedNumbers={selectedNumbers}
           				unselectNumber={this.unselectNumber}/>
