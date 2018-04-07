@@ -179,7 +179,7 @@ class Game extends React.Component{
   
   updateDoneStatus = ()=>{
   	this.setState(prevState=>{
-    	if(prevState.usedNumbers.length===0){
+    	if(prevState.usedNumbers.length===9){
       	return {doneStatus:'Done, Nice!'};
       }
       if(prevState.redraws === 0 && !this.possibleSolutions(prevState)){
